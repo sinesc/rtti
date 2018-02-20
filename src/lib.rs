@@ -50,6 +50,7 @@ pub enum Type {
     char,
     bool,
     Struct(Struct),
+    Tuple(Tuple),
 }
 
 #[derive(Debug)]
@@ -73,4 +74,11 @@ pub struct Struct {
     pub name: String,
     pub vis: Visibility,
     pub fields: Vec<(String, Field)>,
+}
+
+#[derive(Debug)]
+pub struct Tuple {
+    pub name: String,
+    pub vis: Visibility,
+    pub fields: Vec<Field>,
 }
