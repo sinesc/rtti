@@ -2,5 +2,9 @@
 name = "rtti"
 version = "0.1.0"
 authors = ["Dennis Möhlmann <dmo479@gmail.com>"]
+description = "[very early WIP] Run-time type information trait. Use crate rtti-derive to implement."
+documentation = "https://docs.rs/rtti/"
+repository = "https://github.com/sinesc/rtti.git"
+license = "MIT"
 
 [dependencies]
