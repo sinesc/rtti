@@ -3,7 +3,10 @@ macro_rules! impl_prim {
         impl $crate::RTTI for $t {
             #[inline(always)]
             fn rtti() -> $crate::Type {
-                $crate::Type::$i
+                $crate::Type::$i($crate::Primitive {
+                    name: stringify!($i).to_string(),
+                    size: ::std::mem::size_of::<$t>(),
+                })
             }
         }
     )
@@ -20,6 +23,7 @@ macro_rules! impl_opaque {
                     $crate::Type::Opaque($crate::Opaque {
                         name: stringify!($i).to_string(),
                         tys: vec![ Box::new(T::rtti()) ],
+                        size: ::std::mem::size_of::<$t<T>>(),
                     })
                 }
             }

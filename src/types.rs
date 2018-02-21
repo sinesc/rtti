@@ -3,23 +3,70 @@
 #[allow(non_camel_case_types)]
 pub enum Type {
     Ignored,
-    usize,
-    isize,
-    u8,
-    i8,
-    u16,
-    i16,
-    u32,
-    i32,
-    u64,
-    i64,
-    f32,
-    f64,
-    char,
-    bool,
+    usize(Primitive),
+    isize(Primitive),
+    u8(Primitive),
+    i8(Primitive),
+    u16(Primitive),
+    i16(Primitive),
+    u32(Primitive),
+    i32(Primitive),
+    u64(Primitive),
+    i64(Primitive),
+    f32(Primitive),
+    f64(Primitive),
+    char(Primitive),
+    bool(Primitive),
     Struct(Struct),
     Tuple(Tuple),
     Opaque(Opaque),
+}
+
+impl Type {
+    pub fn size(self: &Self) -> Option<usize> {
+        match *self {
+            Type::usize(ref p) => Some(p.size),
+            Type::isize(ref p) => Some(p.size),
+            Type::u8(ref p) => Some(p.size),
+            Type::i8(ref p) => Some(p.size),
+            Type::u16(ref p) => Some(p.size),
+            Type::i16(ref p) => Some(p.size),
+            Type::u32(ref p) => Some(p.size),
+            Type::i32(ref p) => Some(p.size),
+            Type::u64(ref p) => Some(p.size),
+            Type::i64(ref p) => Some(p.size),
+            Type::f32(ref p) => Some(p.size),
+            Type::f64(ref p) => Some(p.size),
+            Type::char(ref p) => Some(p.size),
+            Type::bool(ref p) => Some(p.size),
+            Type::Struct(ref s) => Some(s.size),
+            Type::Tuple(ref t) => Some(t.size),
+            Type::Opaque(ref o) => Some(o.size),
+            _ => None
+        }
+    }
+    /*pub fn name(self: &Self) -> Option<String> {
+        match *self {
+            Type::usize(ref p) => Some(p.name),
+            Type::isize(ref p) => Some(p.name),
+            Type::u8(ref p) => Some(p.name),
+            Type::i8(ref p) => Some(p.name),
+            Type::u16(ref p) => Some(p.name),
+            Type::i16(ref p) => Some(p.name),
+            Type::u32(ref p) => Some(p.name),
+            Type::i32(ref p) => Some(p.name),
+            Type::u64(ref p) => Some(p.name),
+            Type::i64(ref p) => Some(p.name),
+            Type::f32(ref p) => Some(p.name),
+            Type::f64(ref p) => Some(p.name),
+            Type::char(ref p) => Some(p.name),
+            Type::bool(ref p) => Some(p.name),
+            Type::Struct(ref s) => Some(s.name),
+            Type::Tuple(ref t) => Some(t.name),
+            Type::Opaque(ref o) => Some(o.name),
+            _ => None
+        }
+    }*/
 }
 
 /// Visibility of a type or struct member.
@@ -44,6 +91,7 @@ pub struct Field {
 #[derive(Debug)]
 pub struct Struct {
     pub name: String,
+    pub size: usize,
     pub vis: Visibility,
     pub fields: Vec<(String, Field)>,
 }
@@ -52,6 +100,7 @@ pub struct Struct {
 #[derive(Debug)]
 pub struct Tuple {
     pub name: String,
+    pub size: usize,
     pub vis: Visibility,
     pub fields: Vec<Field>,
 }
@@ -60,5 +109,13 @@ pub struct Tuple {
 #[derive(Debug)]
 pub struct Opaque {
     pub name: String,
+    pub size: usize,
     pub tys: Vec<Box<Type>>,
+}
+
+/// An primitive type.
+#[derive(Debug)]
+pub struct Primitive {
+    pub name: String,
+    pub size: usize,
 }
