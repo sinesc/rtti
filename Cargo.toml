@@ -6,5 +6,6 @@ description = "[very early WIP] Run-time type information trait. Use crate rtti-
 documentation = "https://docs.rs/rtti/"
 repository = "https://github.com/sinesc/rtti.git"
 license = "MIT"
+categories = [ "data-structures" ]
 
 [dependencies]
