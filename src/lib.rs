@@ -1,5 +1,12 @@
+/*!
+ * Run-time type information trait. Use crate rtti-derive to implement.
+ *
+ * **very early, probably best to stay away for now**
+ */
 
+/// Provides run-time type information.
 pub trait RTTI {
+    /// Returns a Type enum describing the type.
     fn rtti() -> Type;
 }
 
@@ -31,6 +38,7 @@ implement_rtti!(f64, f64);
 implement_rtti!(char, char);
 implement_rtti!(bool, bool);
 
+/// A type.
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
 pub enum Type {
@@ -53,6 +61,7 @@ pub enum Type {
     Tuple(Tuple),
 }
 
+/// Visibility of a type or struct member.
 #[derive(Debug)]
 pub enum Visibility {
     Public,
@@ -62,6 +71,7 @@ pub enum Visibility {
     Unknown
 }
 
+/// Field of a struct or tuple struct.
 #[derive(Debug)]
 pub struct Field {
     pub vis: Visibility,
@@ -69,6 +79,7 @@ pub struct Field {
     pub ty: Box<Type>,
 }
 
+/// A struct (with named members).
 #[derive(Debug)]
 pub struct Struct {
     pub name: String,
@@ -76,6 +87,7 @@ pub struct Struct {
     pub fields: Vec<(String, Field)>,
 }
 
+/// A tuple struct (unnamed members).
 #[derive(Debug)]
 pub struct Tuple {
     pub name: String,
