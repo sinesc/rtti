@@ -2,6 +2,40 @@
  * Run-time type information trait. Use crate rtti-derive to implement.
  *
  * **very early, probably best to stay away for now**
+ *
+ * Implementing `rtti()` for a custom type:
+ *
+ * ```
+ * #[macro_use]
+ * extern crate rtti_derive;
+ * extern crate rtti;
+ * use rtti::RTTI;
+ *
+ * #[derive(RTTI)]
+ * struct Simple {
+ *     x: u32,
+ *     pub y: ::std::sync::Arc<u32>,
+ *     pub(crate) z: Vec<f64>
+ * }
+ *
+ * fn main() {
+ *     println!("{:?}", Simple::rtti());
+ * }
+ * ```
+ *
+ * When implementing RTTI for a generic type, make sure generic parameters implement RTTI:
+ *
+ * ```
+ * #[derive(RTTI)]
+ * struct Generic<T> where T: RTTI {
+ *     test: T,
+ *     stuff: Simple,
+ * }
+ *
+ * fn main() {
+ *     println!("{:?}", Generic::<u64>::rtti());
+ * }
+ * ```
  */
 
 mod types;
