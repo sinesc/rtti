@@ -90,16 +90,16 @@ pub struct Field {
 /// A struct (with named members).
 #[derive(Debug)]
 pub struct Struct {
-    pub name: String,
+    pub name: &'static str,
     pub size: usize,
     pub vis: Visibility,
-    pub fields: Vec<(String, Field)>,
+    pub fields: Vec<(&'static str, Field)>,
 }
 
 /// A tuple struct (unnamed members).
 #[derive(Debug)]
 pub struct Tuple {
-    pub name: String,
+    pub name: &'static str,
     pub size: usize,
     pub vis: Visibility,
     pub fields: Vec<Field>,
@@ -108,7 +108,7 @@ pub struct Tuple {
 /// An opaque type.
 #[derive(Debug)]
 pub struct Opaque {
-    pub name: String,
+    pub name: &'static str,
     pub size: usize,
     pub tys: Vec<Type>,
 }
@@ -116,6 +116,6 @@ pub struct Opaque {
 /// An primitive type.
 #[derive(Debug)]
 pub struct Primitive {
-    pub name: String,
+    pub name: &'static str,
     pub size: usize,
 }
