@@ -84,7 +84,7 @@ pub enum Visibility {
 pub struct Field {
     pub vis: Visibility,
     pub offset: usize,
-    pub ty: Box<Type>,
+    pub ty: Type,
 }
 
 /// A struct (with named members).
@@ -110,7 +110,7 @@ pub struct Tuple {
 pub struct Opaque {
     pub name: String,
     pub size: usize,
-    pub tys: Vec<Box<Type>>,
+    pub tys: Vec<Type>,
 }
 
 /// An primitive type.

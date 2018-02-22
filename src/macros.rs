@@ -22,7 +22,7 @@ macro_rules! impl_opaque {
                 fn rtti() -> $crate::Type {
                     $crate::Type::Opaque($crate::Opaque {
                         name: stringify!($i).to_string(),
-                        tys: vec![ Box::new(T::rtti()) ],
+                        tys: vec![ T::rtti() ],
                         size: ::std::mem::size_of::<$t<T>>(),
                     })
                 }
