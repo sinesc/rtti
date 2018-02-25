@@ -5,6 +5,7 @@ Run-time type information trait. Use crate rtti-derive to implement.
 **very early, probably best to stay away for now**
 
 To include RTTI, use:
+
 ```
 #[macro_use]
 extern crate rtti_derive;
@@ -13,6 +14,7 @@ use rtti::RTTI;
 ```
 
 You can then implement `rtti()` for a custom type:
+
 ```
 # #[macro_use]
 # extern crate rtti_derive;
@@ -32,6 +34,7 @@ fn main() {
 ```
 
 You can ignore fields or add hints using the ignore and hint attributes:
+
 ```
 # #[macro_use]
 # extern crate rtti_derive;
@@ -56,6 +59,7 @@ fn main() {
 ```
 
 When implementing RTTI for a generic type, make sure generic parameters implement RTTI:
+
 ```
 #[derive(RTTI)]
 struct Generic<T> where T: RTTI {
