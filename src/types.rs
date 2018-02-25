@@ -45,7 +45,7 @@ impl Type {
             _ => None
         }
     }
-    /*pub fn name(self: &Self) -> Option<String> {
+    pub fn name(self: &Self) -> Option<&'static str> {
         match *self {
             Type::usize(ref p) => Some(p.name),
             Type::isize(ref p) => Some(p.name),
@@ -66,7 +66,7 @@ impl Type {
             Type::Opaque(ref o) => Some(o.name),
             _ => None
         }
-    }*/
+    }
 }
 
 /// Visibility of a type or struct member.
