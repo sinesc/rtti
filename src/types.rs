@@ -85,6 +85,7 @@ pub struct Field {
     pub vis: Visibility,
     pub offset: usize,
     pub ty: Type,
+    pub hints: Vec<&'static str>,
 }
 
 /// A struct (with named members).

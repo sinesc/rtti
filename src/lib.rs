@@ -1,42 +1,73 @@
 /*!
- * Run-time type information trait. Use crate rtti-derive to implement.
- *
- * **very early, probably best to stay away for now**
- *
- * Implementing `rtti()` for a custom type:
- *
- * ```
- * #[macro_use]
- * extern crate rtti_derive;
- * extern crate rtti;
- * use rtti::RTTI;
- *
- * #[derive(RTTI)]
- * struct Simple {
- *     x: u32,
- *     pub y: ::std::sync::Arc<u32>,
- *     pub(crate) z: Vec<f64>
- * }
- *
- * fn main() {
- *     println!("{:?}", Simple::rtti());
- * }
- * ```
- *
- * When implementing RTTI for a generic type, make sure generic parameters implement RTTI:
- *
- * ```
- * #[derive(RTTI)]
- * struct Generic<T> where T: RTTI {
- *     test: T,
- *     stuff: Simple,
- * }
- *
- * fn main() {
- *     println!("{:?}", Generic::<u64>::rtti());
- * }
- * ```
- */
+
+Run-time type information trait. Use crate rtti-derive to implement.
+
+**very early, probably best to stay away for now**
+
+To include RTTI, use:
+```
+#[macro_use]
+extern crate rtti_derive;
+extern crate rtti;
+use rtti::RTTI;
+```
+
+You can then implement `rtti()` for a custom type:
+```
+# #[macro_use]
+# extern crate rtti_derive;
+# extern crate rtti;
+# use rtti::RTTI;
+#
+#[derive(RTTI)]
+struct Simple {
+    x: u32,
+    pub y: ::std::sync::Arc<u32>,
+    pub(crate) z: Vec<f64>
+}
+
+fn main() {
+    println!("{:?}", Simple::rtti());
+}
+```
+
+You can ignore fields or add hints using the ignore and hint attributes:
+```
+# #[macro_use]
+# extern crate rtti_derive;
+# extern crate rtti;
+# use rtti::RTTI;
+#
+struct UnsupportedForeignType ();
+
+#[derive(RTTI)]
+struct Attributed {
+    #[rtti(hint = "foo")]
+    #[rtti(hint = "bar")]
+    pub foobard: ::std::sync::Arc<u32>,
+    #[rtti(ignore)]
+    #[rtti(hint = "sets type to Type::Unknown")]
+    ignored: UnsupportedForeignType,
+}
+
+fn main() {
+    println!("{:?}", Attributed::rtti());
+}
+```
+
+When implementing RTTI for a generic type, make sure generic parameters implement RTTI:
+```
+#[derive(RTTI)]
+struct Generic<T> where T: RTTI {
+    test: T,
+    stuff: Simple,
+}
+
+fn main() {
+    println!("{:?}", Generic::<u64>::rtti());
+}
+```
+*/
 
 mod types;
 pub use types::*;
@@ -45,6 +76,15 @@ pub use types::*;
 pub trait RTTI {
     /// Returns a Type enum describing the type.
     fn rtti() -> Type;
+}
+
+#[doc(hidden)]
+pub struct Ignored ();
+
+impl RTTI for Ignored {
+    fn rtti() -> Type {
+        Type::Ignored
+    }
 }
 
 // implement built in types
