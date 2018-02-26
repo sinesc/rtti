@@ -1,6 +1,6 @@
 [package]
 name = "rtti"
-version = "0.3.1"
+version = "0.3.2"
 authors = ["Dennis Möhlmann <dmo479@gmail.com>"]
 description = "[very early WIP] Run-time type information trait. Use crate rtti-derive to implement."
 documentation = "https://docs.rs/rtti/"

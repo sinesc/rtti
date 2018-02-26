@@ -72,7 +72,8 @@ fn main() {
 }
 ```
 */
-
+#[macro_use]
+mod macros;
 mod types;
 pub use types::*;
 
@@ -93,9 +94,6 @@ impl RTTI for Ignored {
 
 // implement built in types
 mod wrapper {
-    #[path="../macros.rs"]
-    #[macro_use]
-    mod macros;
     impl_prim!(usize, usize);
     impl_prim!(isize, isize);
     impl_prim!(u8, u8);
@@ -125,5 +123,4 @@ mod wrapper {
     impl_opaque!(std::collections::BTreeSet, BTreeSet);
     impl_opaque!(std::collections::BinaryHeap, BinaryHeap);
     impl_opaque!(std::marker::PhantomData, PhantomData);
-
 }
