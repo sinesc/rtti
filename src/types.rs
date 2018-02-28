@@ -19,6 +19,7 @@ pub enum Type {
     bool(Primitive),
     Struct(Struct),
     Tuple(Tuple),
+    Enum(Enum),
     Opaque(Opaque),
 }
 
@@ -42,6 +43,7 @@ impl Type {
             Type::Struct(ref s) => Some(s.size),
             Type::Tuple(ref t) => Some(t.size),
             Type::Opaque(ref o) => Some(o.size),
+            Type::Enum(ref o) => Some(o.size),
             _ => None
         }
     }
@@ -64,6 +66,7 @@ impl Type {
             Type::Struct(ref s) => Some(s.name),
             Type::Tuple(ref t) => Some(t.name),
             Type::Opaque(ref o) => Some(o.name),
+            Type::Enum(ref o) => Some(o.name),
             _ => None
         }
     }
@@ -104,6 +107,22 @@ pub struct Tuple {
     pub size: usize,
     pub vis: Visibility,
     pub fields: Vec<Field>,
+}
+
+/// Variant of an enum.
+#[derive(Debug)]
+pub struct Variant {
+    pub fields: Vec<Field>,
+    pub hints: Vec<&'static str>,
+}
+
+/// An enum.
+#[derive(Debug)]
+pub struct Enum {
+    pub name: &'static str,
+    pub size: usize,
+    pub vis: Visibility,
+    pub variants: Vec<(&'static str, Variant)>,
 }
 
 /// An opaque type.
