@@ -2,7 +2,7 @@ macro_rules! impl_prim {
     ($t:ty, $i:ident) => (
         impl $crate::RTTI for $t {
             #[inline(always)]
-            fn rtti() -> $crate::Type {
+            fn ctti() -> $crate::Type {
                 $crate::Type::$i($crate::Primitive {
                     name: stringify!($i),
                     size: ::std::mem::size_of::<$t>(),
@@ -19,10 +19,10 @@ macro_rules! impl_opaque {
             use $i;
             impl<T> $crate::RTTI for $t <T> where T: $crate::RTTI {
                 #[inline(always)]
-                fn rtti() -> $crate::Type {
+                fn ctti() -> $crate::Type {
                     $crate::Type::Opaque($crate::Opaque {
                         name: stringify!($i),
-                        tys: vec![ T::rtti() ],
+                        tys: vec![ T::ctti() ],
                         size: ::std::mem::size_of::<$t<T>>(),
                     })
                 }

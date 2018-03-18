@@ -8,6 +8,7 @@ To include RTTI, use:
 extern crate rtti_derive;
 extern crate rtti;
 use rtti::RTTI;
+# fn main() {}
 ```
 
 You can then implement `rtti()` for a custom type:
@@ -26,7 +27,7 @@ struct Simple {
 }
 
 fn main() {
-    println!("{:?}", Simple::rtti());
+    println!("{:?}", Simple::ctti());
 }
 ```
 
@@ -46,26 +47,30 @@ struct Attributed {
     #[rtti(hint = "bar")]
     pub foobard: ::std::sync::Arc<u32>,
     #[rtti(ignore)]
-    #[rtti(hint = "sets type to Type::Unknown")]
+    #[rtti(hint = "sets type to Type::Ignored")]
     ignored: UnsupportedForeignType,
 }
 
 fn main() {
-    println!("{:?}", Attributed::rtti());
+    println!("{:?}", Attributed::ctti());
 }
 ```
 
 When implementing RTTI for a generic type, make sure generic parameters implement RTTI:
 
 ```
+# #[macro_use]
+# extern crate rtti_derive;
+# extern crate rtti;
+# use rtti::RTTI;
 #[derive(RTTI)]
 struct Generic<T> where T: RTTI {
     test: T,
-    stuff: Simple,
+    stuff: i32,
 }
 
 fn main() {
-    println!("{:?}", Generic::<u64>::rtti());
+    println!("{:?}", Generic::<u64>::ctti());
 }
 ```
 */
@@ -77,14 +82,18 @@ pub use types::*;
 /// Provides run-time type information.
 pub trait RTTI {
     /// Returns a Type enum describing the type.
-    fn rtti() -> Type;
+    fn ctti() -> Type;
+    /// Returns a Type enum describing the type of the instance.
+    fn rtti(self: &Self) -> Type {
+        Self::ctti()
+    }
 }
 
 #[doc(hidden)]
 pub struct Ignored ();
 
 impl RTTI for Ignored {
-    fn rtti() -> Type {
+    fn ctti() -> Type {
         Type::Ignored
     }
 }
