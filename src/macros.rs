@@ -30,3 +30,41 @@ macro_rules! impl_opaque {
         }
     )
 }
+
+macro_rules! impl_opaque2 {
+    ($i:path, $t:tt) => (
+        #[allow(non_upper_case_globals, non_snake_case)]
+        mod $t {
+            use $i as $t;
+            impl<T, U> $crate::RTTI for $t <T, U> where T: $crate::RTTI, U: $crate::RTTI {
+                #[inline(always)]
+                fn ctti() -> $crate::Type {
+                    $crate::Type::Opaque($crate::Opaque {
+                        name: stringify!($i),
+                        tys: vec![ T::ctti(), U::ctti() ],
+                        size: ::std::mem::size_of::<$t<T, U>>(),
+                    })
+                }
+            }
+        }
+    )
+}
+
+macro_rules! impl_opaque3 {
+    ($i:path, $t:tt) => (
+        #[allow(non_upper_case_globals, non_snake_case)]
+        mod $t {
+            use $i as $t;
+            impl<T, U, V> $crate::RTTI for $t <T, U, V> where T: $crate::RTTI, U: $crate::RTTI, V: $crate::RTTI {
+                #[inline(always)]
+                fn ctti() -> $crate::Type {
+                    $crate::Type::Opaque($crate::Opaque {
+                        name: stringify!($i),
+                        tys: vec![ T::ctti(), U::ctti(), V::ctti() ],
+                        size: ::std::mem::size_of::<$t<T, U, V>>(),
+                    })
+                }
+            }
+        }
+    )
+}
